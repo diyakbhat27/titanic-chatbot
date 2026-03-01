@@ -1,0 +1,55 @@
+import streamlit as st
+import requests
+
+st.title("Titanic Data Chatbot")
+
+# store chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# display previous messages
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+        if msg.get("chart"):
+            st.image(msg["chart"])
+
+# chat input (ENTER works automatically)
+prompt = st.chat_input("Ask about Titanic dataset...")
+
+if prompt:
+    # show user message
+    st.session_state.messages.append(
+        {"role": "user", "content": prompt}
+    )
+
+    with st.chat_message("user"):
+        st.write(prompt)
+
+    # call backend
+    response = requests.post(
+        "http://localhost:8000/ask",
+        json={"question": prompt},
+        timeout=60
+    )
+
+    data = response.json()
+
+    chart_url = None
+    if data.get("show_chart"):
+        chart_url = "http://localhost:8000/chart"
+
+    # store assistant reply
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": data["answer"],
+            "chart": chart_url
+        }
+    )
+
+    # display assistant reply
+    with st.chat_message("assistant"):
+        st.write(data["answer"])
+        if chart_url:
+            st.image(chart_url)

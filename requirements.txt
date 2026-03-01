@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pydantic
+streamlit
+requests
+pandas
+numpy
+openpyxl
+matplotlib
+seaborn
+tabulate
+langchain
+langchain-experimental
+langchain-groq
+python-dotenv
