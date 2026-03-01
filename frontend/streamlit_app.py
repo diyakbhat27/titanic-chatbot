@@ -23,7 +23,7 @@ if prompt:
         st.write(prompt)
 
     response = requests.post(
-        "http://localhost:8000/ask",
+        "https://titanic-chatbot-backend-ea27.onrender.com/ask",
         json={"question": prompt},
         timeout=60
     )
@@ -32,7 +32,7 @@ if prompt:
 
     chart_url = None
     if data.get("show_chart"):
-        chart_url = "http://localhost:8000/chart"
+        chart_url = "https://titanic-chatbot-backend-ea27.onrender.com/chart"
 
     st.session_state.messages.append(
         {
